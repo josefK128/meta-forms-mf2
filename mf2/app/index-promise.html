@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>metaforms ng2-jspm-ts client-producer</title>
+  <base href="/mf3/"/> 
+</head>
+
+<body>
+  <narrative>Loading...</narrative>
+  <div><h2 id='display_g'>mf genotype...</h2></div>    
+  <div><h2 id='display_p'>mf phenotype...</h2></div>    
+
+  <!-- system.js import -->
+  <script src="./jspm_packages/system.js"></script>
+
+  <!-- jspm import -->
+  <script src="./config.js"></script>
+
+  <script>
+    System.import('query-string')
+      .then(function (queryString) {
+          window.console.log(queryString);
+      })
+      .catch(function (error) {
+          setTimeout(function () {
+              throw error;
+          }, 0);
+      });
+
+
+    // bootstrap the Angular2 application
+    // bootstrap the Angular2 application
+    var config = {
+          hostG: 'localhost',
+          portG: 8080,
+          hostP: 'localhost',
+          portP: 8081,
+          hostL: 'localhost',
+          portL: 8082,
+          cbg: (o) => {
+            display_g.innerHTML = `genotype = ${o.genotype}`;
+          },
+          cbp: (o) => {
+            display_p.innerHTML = `phenotype = ${o.phenotype}`;
+          }
+        },
+        Narrative,
+        narrative;
+
+    // import module M = narrative-component which exports class Narrative
+    System.import('./app/modules/narrative.js')
+    .then((M) => {
+      console.log(`M = ${M}`);
+      Narrative = M.Narrative;  
+      console.log(`Narrative = ${Narrative}`);
+
+      Narrative.instance().then((_narrative) => {
+        narrative = _narrative;
+        for(var p in narrative){
+          console.log(`resolve: narrative has property ${p}`);
+        }
+        console.log(`********* narrative = ${narrative}`);
+        console.log(`resolve: narrative.index() = ${narrative.index()}`);
+        console.log(`resolve: narrative.cycle = ${narrative.cycle}`);
+
+        // start production of axiom requests - arg is period(ms)
+        narrative.cycle(5000, config.cbg, config.cbp);
+      })
+      .catch((e) => {
+        console.log(`Promise returned by Narrative.instance() rejected: ${e}`);
+      });
+    })
+    .catch((e) => {
+      console.log(`import of narrative-component caused error: ${e}`);
+    });
+  </script>
+</body>
+</html>

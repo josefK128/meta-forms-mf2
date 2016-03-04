@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+<testsuite name="producer-component existence" errors="0" tests="5" failures="0" time="0.032" timestamp="2016-02-28T10:04:43">
+  <testcase classname="producer-component existence" name="Producer class is imported" time="0.016"></testcase>
+  <testcase classname="producer-component existence" name="producer instance is created" time="0"></testcase>
+  <testcase classname="producer-component existence" name="Producer creates genotype-service-proxy" time="0"></testcase>
+  <testcase classname="producer-component existence" name="Producer creates phenotype-service-proxy" time="0.016"></testcase>
+  <testcase classname="producer-component existence" name="Producer creates log-service-proxy" time="0"></testcase>
+</testsuite>
+</testsuites>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+<testsuite name="genotype-service genotype generation" errors="0" tests="2" failures="0" time="8.097" timestamp="2016-02-27T18:59:38">
+  <testcase classname="genotype-service genotype generation" name="Genotype processes axiom1 genotype correctly" time="4.056"></testcase>
+  <testcase classname="genotype-service genotype generation" name="Genotype processes axiom2 genotype correctly" time="4.041"></testcase>
+</testsuite>
+</testsuites>

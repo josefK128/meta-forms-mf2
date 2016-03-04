@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+<testsuite name="phenotype-service phenotype generation" errors="0" tests="2" failures="0" time="8.127" timestamp="2016-02-27T19:07:14">
+  <testcase classname="phenotype-service phenotype generation" name="Phenotype processes  genotype1 phenotype correctly" time="4.071"></testcase>
+  <testcase classname="phenotype-service phenotype generation" name="Phenotype processes genotype2 phenotype correctly" time="4.056"></testcase>
+</testsuite>
+</testsuites>

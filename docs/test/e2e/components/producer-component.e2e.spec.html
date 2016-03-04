@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>producer-component.e2e.spec.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="..\..\docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>producer-component.e2e.spec.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>producer-component.spec.js</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-meta">'use strict'</span>;
+
+<span class="hljs-keyword">var</span> Producer = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../../../app/scripts/components/producer-component.js'</span>),
+    producer,
+    axiom1 = <span class="hljs-built_in">JSON</span>.stringify({ axiom: [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>],
+             g_rule: <span class="hljs-string">'+'</span>,
+             p_rule: <span class="hljs-number">.5</span> }),
+    axiom2 = <span class="hljs-built_in">JSON</span>.stringify({ axiom: [<span class="hljs-number">3</span>,<span class="hljs-number">5</span>],
+             g_rule: <span class="hljs-string">'*'</span>,
+             p_rule: <span class="hljs-number">2.0</span> }),
+    expect1 = <span class="hljs-string">'{"axiom":[2,4],"g_rule":"+","p_rule":0.5,"genotype":6,"phenotype":3}'</span>,   
+    expect2 = <span class="hljs-string">'{"axiom":[3,5],"g_rule":"*","p_rule":2,"genotype":15,"phenotype":30}'</span>;
+
+
+describe (<span class="hljs-string">"producer-component"</span>, () =&gt; {
+  beforeEach(() =&gt; {
+    producer = <span class="hljs-keyword">new</span> Producer(<span class="hljs-string">'test'</span>);
+  });
+  afterEach(() =&gt; {
+    producer = <span class="hljs-literal">undefined</span>;
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>existence tests</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  it (<span class="hljs-string">"Producer class is imported"</span>, () =&gt; {
+    expect(Producer).toBeDefined();
+  });
+  it (<span class="hljs-string">"producer instance is created"</span>, () =&gt; {
+    expect(producer).toBeDefined();
+  });
+  it (<span class="hljs-string">"Producer name is 'test'"</span>, () =&gt; {
+    expect(producer.name).toBe(<span class="hljs-string">"test"</span>);
+  });
+  it (<span class="hljs-string">"Producer creates genotype-service"</span>, () =&gt; {
+    expect(producer.g).toBeDefined();
+  });
+  it (<span class="hljs-string">"Producer creates log-service"</span>, () =&gt; {
+    expect(producer.log).toBeDefined();
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>e2e tests</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  it (<span class="hljs-string">"Producer processes axiom1 correctly"</span>, () =&gt; {
+    runs(() =&gt; {
+      producer.emit(axiom1);
+    });
+    waits(<span class="hljs-number">1000</span>);
+    runs(() =&gt; {
+      <span class="hljs-keyword">var</span> s = producer.last_result();
+      s = s.replace(<span class="hljs-regexp">/\s+/g</span>, <span class="hljs-string">''</span>); <span class="hljs-comment">// strip white spaces</span>
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`expect1 = <span class="hljs-subst">${expect1}</span>`</span>)
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`producer.emit(axiom1) returns <span class="hljs-subst">${s}</span>`</span>)
+      expect(s).toEqual(expect1);
+    });
+  });
+  it (<span class="hljs-string">"Producer processes axiom2 correctly"</span>, () =&gt; {
+    runs(() =&gt; {
+      producer.emit(axiom2);
+    });
+    waits(<span class="hljs-number">1000</span>);
+    runs(() =&gt; {
+      <span class="hljs-keyword">var</span> s = producer.last_result();
+      s = s.replace(<span class="hljs-regexp">/\s+/g</span>, <span class="hljs-string">''</span>);   <span class="hljs-comment">// strip white spaces</span>
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`expect2 = <span class="hljs-subst">${expect2}</span>`</span>)
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`producer.emit(axiom1) returns <span class="hljs-subst">${s}</span>`</span>)
+      expect(s).toEqual(expect2);
+    });
+  });
+})</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+<testsuite name="genotype-service existence" errors="0" tests="1" failures="0" time="0" timestamp="2016-02-28T10:22:31">
+  <testcase classname="genotype-service existence" name="genotype singleton is imported" time="0"></testcase>
+</testsuite>
+</testsuites>

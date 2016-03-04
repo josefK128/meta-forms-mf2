@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+<testsuite name="phenotype-service" errors="0" tests="10" failures="0" time="4.058" timestamp="2016-02-17T20:07:06">
+  <testcase classname="phenotype-service" name="G class is imported" time="0.016"></testcase>
+  <testcase classname="phenotype-service" name="g instance is created" time="0"></testcase>
+  <testcase classname="phenotype-service" name="genotype-mock class is imported" time="0"></testcase>
+  <testcase classname="phenotype-service" name="phenotype instance is created" time="0"></testcase>
+  <testcase classname="phenotype-service" name="g.emit is defined" time="0"></testcase>
+  <testcase classname="phenotype-service" name="client is defined" time="0"></testcase>
+  <testcase classname="phenotype-service" name="client.receive is defined" time="0"></testcase>
+  <testcase classname="phenotype-service" name="client.last_result is defined" time="0"></testcase>
+  <testcase classname="phenotype-service" name="Phenotype processes genotype1 correctly" time="2.03"></testcase>
+  <testcase classname="phenotype-service" name="Genotype processes genotype2 correctly" time="2.012"></testcase>
+</testsuite>
+</testsuites>

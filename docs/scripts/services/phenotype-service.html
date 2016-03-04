@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>phenotype-service.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="..\docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>phenotype-service.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>phenotype-service.js </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-meta">'use strict'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Observables, Singleton instance, subscribers</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> Rx = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rx'</span>),
+    <span class="hljs-keyword">async</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">'async'</span>),
+    phenotype,
+    log,
+    subscribers = {},
+    index = <span class="hljs-number">1</span>,
+    initialized = <span class="hljs-literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>exercise Rx</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  Rx.Observable.just(<span class="hljs-string">'\nhello Phenotype Rx'</span>).subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">v</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>console.log(v);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  });
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span>  <span class="hljs-title">Phenotype</span> </span>{
+  <span class="hljs-keyword">constructor</span>() {
+  }
+
+  initialize(_portP, _hostL, _portL){
+    <span class="hljs-keyword">var</span> portP = _portP || <span class="hljs-number">8081</span>,  <span class="hljs-comment">// default 8081</span>
+        hostL = _hostL || <span class="hljs-string">'localhost'</span>,  <span class="hljs-comment">// def 'localhost'</span>
+        portL = _portL || <span class="hljs-number">8082</span>,  <span class="hljs-comment">// default 8082</span>
+        L = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./l-service.js'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>initialize exactly once</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(!initialized){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>begin listening on port for client connections</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`creating Phenotype-service on portP = <span class="hljs-subst">${portP}</span>`</span>);
+      phenotype = <span class="hljs-built_in">require</span>(<span class="hljs-string">'socket.io'</span>).listen(portP),
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`phenotype-service listening on port <span class="hljs-subst">${portP}</span> channel 'p'`</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>log-proxy instance</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      log = <span class="hljs-keyword">new</span> L(hostL, portL);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>connection-handler</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      phenotype.on(<span class="hljs-string">'connection'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">socket</span>) </span>{
+        <span class="hljs-keyword">var</span> name = <span class="hljs-string">'s'</span> + index++;
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`subscriber connected to phenotype with name = <span class="hljs-subst">${name}</span>`</span>);
+        socket.emit(<span class="hljs-string">'name'</span>, name);
+        subscribers[name] = socket;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>msg-handler for phenotype</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        socket.on(<span class="hljs-string">'p'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">_msg</span>)</span>{
+  
+          <span class="hljs-keyword">async</span>.series([
+            () =&gt; {
+              <span class="hljs-keyword">var</span> msg = _msg,
+                  o = <span class="hljs-built_in">JSON</span>.parse(_msg),                
+                  client = subscribers[o.name],
+                  msg = <span class="hljs-string">`Phenotype received from <span class="hljs-subst">${o.name}</span> <span class="hljs-subst">${msg}</span>`</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>log received msg</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>              <span class="hljs-built_in">console</span>.log(msg);
+              log.emit(msg);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>phenotype</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>              o[<span class="hljs-string">'phenotype'</span>] = o[<span class="hljs-string">'genotype'</span>] * o.p_rule;  
+  
+              msg = <span class="hljs-built_in">JSON</span>.stringify(o);
+              client.emit(<span class="hljs-string">'p'</span>, msg);
+              msg = <span class="hljs-string">`Phenotype sends {o.name} generated phenotype <span class="hljs-subst">${msg}</span>`</span>;
+              <span class="hljs-built_in">console</span>.log(msg);
+              log.emit(msg);
+            }],
+            (error) =&gt; {
+              msg = <span class="hljs-string">`<span class="hljs-subst">${msg}</span> generated Phenotype error = <span class="hljs-subst">${error}</span>`</span>;
+              log.emit(msg);
+            }
+          ); <span class="hljs-comment">// series</span>
+        });
+      });
+    }<span class="hljs-comment">// if(!initialized)</span>
+    initialized = <span class="hljs-literal">true</span>;
+  } <span class="hljs-comment">// initialize</span>
+} <span class="hljs-comment">// class</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>maintenance of Singleton</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">if</span>(!phenotype){
+  phenotype = <span class="hljs-keyword">new</span> Phenotype();  <span class="hljs-comment">// create Phenotype singleton instance once</span>
+}
+<span class="hljs-built_in">module</span>.exports = phenotype;     <span class="hljs-comment">// return Phenotype singleton instance</span></pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

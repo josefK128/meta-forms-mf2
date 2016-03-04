@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>metaforms ng2-jspm-ts client-producer</title>
+  <base href="/mf2/"/> 
+</head>
+
+<body>
+  <narrative>Loading...</narrative>
+  <div><h2 id='display_g'>mf genotype...</h2></div>    
+  <div><h2 id='display_p'>mf phenotype...</h2></div>    
+
+  <!-- system.js import -->
+  <script src="./jspm_packages/system.js"></script>
+
+  <!-- jspm import -->
+  <script src="./config.js"></script>
+
+  <script>
+    System.import('query-string')
+      .then(function (queryString) {
+          window.console.log(queryString);
+      })
+      .catch(function (error) {
+          setTimeout(function () {
+              throw error;
+          }, 0);
+      });
+
+
+    // import module M = narrative-component which exports class Narrative
+    System.import('./app/modules/narrative.js')
+      .then((M) => {
+        console.log(`M = ${M}`);
+      })
+      .catch((e) => {
+        console.log(`import of narrative-component caused error: ${e}`);
+      });
+  </script>
+</body>
+</html>

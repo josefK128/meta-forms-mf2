@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>l-service.ts.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="..\docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>l-service.ts.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>l-service.js 
+client of log-service</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-meta">'use strict'</span>;
+
+<span class="hljs-keyword">import</span> {Injectable} <span class="hljs-keyword">from</span> <span class="hljs-string">'angular2/core'</span>;
+<span class="hljs-keyword">import</span> sio <span class="hljs-keyword">from</span> <span class="hljs-string">'socket.io-client'</span>;
+
+
+<span class="hljs-keyword">var</span> t = () =&gt; {
+      <span class="hljs-keyword">return</span> (<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().toJSON()).replace(<span class="hljs-regexp">/^.*T/</span>, <span class="hljs-string">''</span>).replace(<span class="hljs-regexp">/Z/</span>, <span class="hljs-string">''</span>);
+    };
+
+
+@Injectable()
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span>  <span class="hljs-title">L</span> </span>{
+  log;
+
+  <span class="hljs-keyword">constructor</span>(_hostL, _portL) {
+    <span class="hljs-keyword">var</span> hostL = _hostL || <span class="hljs-string">'localhost'</span>,
+        portL = _portL || <span class="hljs-number">8082</span>,
+        url = <span class="hljs-string">`http://<span class="hljs-subst">${hostL}</span>:<span class="hljs-subst">${portL}</span>`</span>;
+
+    <span class="hljs-keyword">this</span>.log = sio.connect(url);
+  }
+
+  emit(msg){
+    msg = <span class="hljs-string">`&lt;<span class="hljs-subst">${t()}</span>&gt;&lt;<span class="hljs-subst">${performance.now()}</span>&gt; <span class="hljs-subst">${msg}</span>`</span>;
+    <span class="hljs-keyword">this</span>.log.emit(<span class="hljs-string">'log'</span>, msg);
+  }
+} <span class="hljs-comment">// class</span></pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
