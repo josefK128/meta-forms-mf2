@@ -20,5 +20,5 @@ meta-forms-mf2/app$>
      * runs a producer emit every second (two producers)
 
 * [5] run browser ng2-client by requesting URL:
-```http://<domain>/<pathto-meta-forms-mf2>/meta-forms-mf2/app/index.html```
+```http://<domain>/<pathto-app>/<app>/app/index.html```
 
