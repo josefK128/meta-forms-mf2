@@ -1,4 +1,4 @@
-* __scripts_ts README-docs-ts__
+* __README-docs-ts__
 
 * docco does not operate on ts-files ?!
 
