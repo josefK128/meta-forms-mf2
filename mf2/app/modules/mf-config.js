@@ -12,6 +12,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
             exports_1("MF_CONFIG", MF_CONFIG = new core_1.OpaqueToken('mf-config'));
             ;
             exports_1("CONFIG", CONFIG = {
+                test: false,
                 hostG: 'localhost',
                 portG: 8080,
                 hostP: 'localhost',

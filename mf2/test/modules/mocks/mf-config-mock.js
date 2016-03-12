@@ -12,12 +12,16 @@ System.register(['angular2/core'], function(exports_1, context_1) {
             exports_1("MF_CONFIG", MF_CONFIG = new core_1.OpaqueToken('mf-config'));
             ;
             exports_1("CONFIG", CONFIG = {
+                test: true,
                 hostG: 'localhost',
                 portG: 8080,
                 hostP: 'localhost',
                 portP: 8081,
                 hostL: 'localhost',
-                portL: 8082
+                portL: 8082,
+                period: 5000,
+                cbg: function (o) { document.getElementById('display_g').innerHTML = "genotype = " + o.genotype; },
+                cbp: function (o) { document.getElementById('display_p').innerHTML = "phenotype = " + o.phenotype; }
             });
         }
     }

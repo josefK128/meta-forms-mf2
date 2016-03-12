@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>metaforms ng2-jspm-ts client-producer</title>
-  <base href="/mf2/"/> 
+  <base href="/mf2t/"/> 
 </head>
 
 <body>
@@ -32,7 +32,12 @@
     // import module M = narrative-component which exports class Narrative
     System.import('./app/modules/narrative.js')
       .then((M) => {
+        var narrative,
+            p;
         console.log(`M = ${M}`);
+        for(var p in M){
+          console.log(`M has property ${p}`);
+        }
       })
       .catch((e) => {
         console.log(`import of narrative-component caused error: ${e}`);

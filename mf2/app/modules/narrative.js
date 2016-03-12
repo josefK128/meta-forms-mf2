@@ -35,8 +35,9 @@ System.register(['reflect-metadata', 'angular2/core', 'angular2/platform/browser
                 function Narrative(config) {
                     this.name = 'foo';
                     this.config = config;
-                    console.log("Producer = " + producer_component_js_1.Producer);
-                    this.producer = new producer_component_js_1.Producer(config.hostG, config.portG, config.hostP, config.portP, config.hostL, config.portL);
+                    // diagnostics
+                    console.log("narrative: config.test = " + config.test);
+                    this.producer = new producer_component_js_1.Producer(config);
                     console.log("this.producer.emitG = " + this.producer.emitG);
                 }
                 Narrative.prototype.getConfig = function () {
@@ -46,7 +47,7 @@ System.register(['reflect-metadata', 'angular2/core', 'angular2/platform/browser
                     var _this = this;
                     var axiom1 = { axiom: [2, 4],
                         g_rule: '+',
-                        p_rule: .5 }, axiom2 = { axiom: [3, 5],
+                        p_rule: .5 }, axiom2 = { axiom: [10, 7],
                         g_rule: '*',
                         p_rule: 2.0 }, msg;
                     // set callbacks if they have been passed in as cycle-args
@@ -61,8 +62,19 @@ System.register(['reflect-metadata', 'angular2/core', 'angular2/platform/browser
                     // webkit axiom-production cycle
                     setInterval(function () {
                         msg = (Math.random() < .5) ? axiom1 : axiom2;
-                        console.log("\n\n@@@ producer sent to genotype-proxy msg = " + msg);
-                        _this.producer.emitG(msg);
+                        console.log("\n\n@@@ ****** producer sent to genotype-proxy msg = " + msg);
+                        _this.producer.emitG(msg).then(function (o) {
+                            console.log("narrative received resolvedG-genotype " + o.genotype);
+                            _this.producer.emitP(o).then(function (o) {
+                                console.log("narrative received resolvedP-phenotype " + o.phenotype);
+                            })
+                                .catch(function (e) {
+                                console.log("producer.emitP(" + o + ") returned rejectP-error: " + e);
+                            });
+                        })
+                            .catch(function (e) {
+                            console.log("producer.emitG(" + msg + ") returned rejectG-error: " + e);
+                        });
                     }, period);
                 };
                 Narrative = __decorate([
@@ -89,7 +101,7 @@ System.register(['reflect-metadata', 'angular2/core', 'angular2/platform/browser
             // to the bootstrapped instance of class Narrative, the single property
             // of Module narrative-component
             browser_1.bootstrap(Narrative).then(function (component) {
-                var narrative = component.instance, cfg = narrative.getConfig(), p;
+                var narrative = component.instance, cfg = narrative.getConfig(), test, p;
                 console.log("@@@@@@@@ bootstrap resolves to componentRef = " + component);
                 console.log("@@@@@@@@ cfg = " + cfg);
                 for (p in cfg) {
@@ -98,8 +110,14 @@ System.register(['reflect-metadata', 'angular2/core', 'angular2/platform/browser
                 for (p in narrative) {
                     console.log("@@@@@@@@ narrative has property " + p);
                 }
-                // start producer cycle of axiom->genotype->phenotype  
-                component.instance.cycle(cfg.period, cfg.cbg, cfg.cbp);
+                // start producer cycle of axiom->genotype->phenotype 
+                test = narrative.getConfig()['test'];
+                console.log("narrative.getConfig()['test'] = " + narrative.getConfig()['test']);
+                console.log("test = " + test);
+                if (test === false) {
+                    console.log("narrative.cycle period = " + cfg.period);
+                    component.instance.cycle(cfg.period, cfg.cbg, cfg.cbp);
+                }
             });
         }
     }

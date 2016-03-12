@@ -47,7 +47,9 @@ run: $&gt;gulp <taskname></p>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp'</span>);
 <span class="hljs-keyword">var</span> tslint = <span class="hljs-built_in">require</span>(<span class="hljs-string">"gulp-tslint"</span>);
-<span class="hljs-keyword">var</span> docco = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp-docco'</span>);</pre></div></div>
+<span class="hljs-keyword">var</span> docco = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp-docco'</span>);
+<span class="hljs-keyword">var</span> del = <span class="hljs-built_in">require</span>(<span class="hljs-string">'del'</span>);
+<span class="hljs-keyword">var</span> jasmine = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp-jasmine'</span>);</pre></div></div>
             
         </li>
         
@@ -62,15 +64,13 @@ run: $&gt;gulp <taskname></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> srcFiles = [
-  <span class="hljs-string">'./app/modules-ts/*.js'</span>, 
-  <span class="hljs-string">'./app/modules-ts/**/*.js'</span>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> tsFiles = [
+  <span class="hljs-string">'./app/modules-ts/*.ts'</span>, 
+  <span class="hljs-string">'./app/modules-ts/**/*.ts'</span>
 ];
-<span class="hljs-keyword">var</span> testFiles = [
-  <span class="hljs-string">'./test/**/*.js'</span>, 
-];
-<span class="hljs-keyword">var</span> devFiles = [
-  <span class="hljs-string">'./gulpfile.js'</span>, 
+<span class="hljs-keyword">var</span> tsTestFiles = [
+  <span class="hljs-string">'./test/modules-ts/*.spec.ts.js'</span>, 
+  <span class="hljs-string">'./test/modules-ts/**/*.spec.ts.js'</span> 
 ];</pre></div></div>
             
         </li>
@@ -82,22 +82,25 @@ run: $&gt;gulp <taskname></p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>write destinations</p>
+              <p>only for use by gulp docco - see README-docs-ts.md</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> docDest = <span class="hljs-string">'./docs/modules'</span>,
-    docTestDest = <span class="hljs-string">'./docs/test'</span>,
-    docDevDest = <span class="hljs-string">'./docs/dev'</span>;
-
-
-
-gulp.task(<span class="hljs-string">'default'</span>, [<span class="hljs-string">'ts2js'</span>]);
-
-
-gulp.task(<span class="hljs-string">'ts2js'</span>, () =&gt; {
-    <span class="hljs-keyword">var</span> typescript = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp-typescript'</span>);
-    <span class="hljs-keyword">var</span> tscConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./tsconfig.json'</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> tsjsFiles = [
+  <span class="hljs-string">'./app/modules-ts/*.ts.js'</span>, 
+  <span class="hljs-string">'./app/modules-ts/**/*.ts.js'</span>
+];
+<span class="hljs-keyword">var</span> tsjsTestFiles = [
+  <span class="hljs-string">'./test/modules-ts/*.spec.ts.js'</span>, 
+  <span class="hljs-string">'./test/modules-ts/**/*.spec.ts.js'</span> 
+];
+<span class="hljs-keyword">var</span> testFiles = [
+  <span class="hljs-string">'./test/modules/*.spec.js'</span>, 
+  <span class="hljs-string">'./test/modules/**/*.spec.js'</span> 
+];
+<span class="hljs-keyword">var</span> devFiles = [
+  <span class="hljs-string">'./gulpfile.js'</span>, 
+];</pre></div></div>
             
         </li>
         
@@ -108,24 +111,24 @@ gulp.task(<span class="hljs-string">'ts2js'</span>, () =&gt; {
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>   var tsResult = gulp
-       .src(srcFiles)
-       .pipe(typescript(tscConfig.compilerOptions));</p>
+              <p>write destinations</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-    <span class="hljs-keyword">var</span> tsResult = gulp
-        .src(srcFiles)
-        .pipe(tslint())
-        .pipe(tslint.report(<span class="hljs-string">"verbose"</span>))
-        .pipe(typescript(tscConfig.compilerOptions));
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> appDest = <span class="hljs-string">'./app/modules/'</span>,
+    appDest_es6 = <span class="hljs-string">'./app/modules_es6/'</span>,
+    testDest = <span class="hljs-string">'./test/modules/'</span>,
+    testDest_es6 = <span class="hljs-string">'./test/modules_es6/'</span>,
+    docDest = <span class="hljs-string">'./docs/app'</span>,
+    docTestDest = <span class="hljs-string">'./docs/test'</span>,
+    docDevDest = <span class="hljs-string">'./docs/dev'</span>;
 
-    <span class="hljs-keyword">if</span>(tscConfig.compilerOptions.target === <span class="hljs-string">'es5'</span>){
-        <span class="hljs-keyword">return</span> tsResult.js.pipe(gulp.dest(<span class="hljs-string">'./app/modules'</span>));
-    }
-    <span class="hljs-keyword">return</span> tsResult.js.pipe(gulp.dest(<span class="hljs-string">'./app/modules-es6/'</span>));
-});</pre></div></div>
+
+
+gulp.task(<span class="hljs-string">'default'</span>, [<span class="hljs-string">'ts2js'</span>]);
+
+
+gulp.task(<span class="hljs-string">'test'</span>, () =&gt;</pre></div></div>
             
         </li>
         
@@ -136,32 +139,82 @@ gulp.task(<span class="hljs-string">'ts2js'</span>, () =&gt; {
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
+              <p>gulp-jasmine works on filepaths so don’t have any plugins before it </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  gulp.src(testFiles).pipe(jasmine())
+);
+
+gulp.task(<span class="hljs-string">'ts2js'</span>, () =&gt; {
+    <span class="hljs-keyword">var</span> typescript = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp-typescript'</span>),
+        tscConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./tsconfig.json'</span>);
+
+    <span class="hljs-keyword">var</span> tsResult = gulp
+        .src(tsFiles)
+        .pipe(tslint())
+        .pipe(tslint.report(<span class="hljs-string">"verbose"</span>))
+        .pipe(typescript(tscConfig.compilerOptions));
+
+    <span class="hljs-keyword">if</span>(tscConfig.compilerOptions.target === <span class="hljs-string">'es5'</span>){
+        <span class="hljs-keyword">return</span> tsResult.js.pipe(gulp.dest(appDest));
+    }
+    <span class="hljs-keyword">return</span> tsResult.js.pipe(gulp.dest(appDest_es6));
+});
+
+gulp.task(<span class="hljs-string">'ts2js-test'</span>, () =&gt; {
+    <span class="hljs-keyword">var</span> typescript = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp-typescript'</span>);
+    <span class="hljs-keyword">var</span> tscConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./tsconfig.json'</span>);
+
+    <span class="hljs-keyword">var</span> tsResult = gulp
+        .src(tsTestFiles)
+        .pipe(tslint())
+        .pipe(tslint.report(<span class="hljs-string">"verbose"</span>))
+        .pipe(typescript(tscConfig.compilerOptions));
+
+    <span class="hljs-keyword">if</span>(tscConfig.compilerOptions.target === <span class="hljs-string">'es5'</span>){
+        <span class="hljs-keyword">return</span> tsResult.js.pipe(gulp.dest(testDest));
+    }
+    <span class="hljs-keyword">return</span> tsResult.js.pipe(gulp.dest(testDest_es6));
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
               <p>task - docco:<br>
 generate side-by-side: L comments with R source (configurable)</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>gulp.task(<span class="hljs-string">'docco'</span>, () =&gt;{
-  gulp.src(srcFiles)
+  gulp.src(tsFiles)
     .pipe(docco())
     .pipe(gulp.dest(docDest));
-  gulp.src(testFiles)
+  gulp.src(tsTestFiles)
     .pipe(docco())
     .pipe(gulp.dest(docTestDest));
-   gulp.src(devFiles)
+  gulp.src(tsjsFiles)
+    .pipe(docco())
+    .pipe(gulp.dest(docDest));
+  gulp.src(tsjsTestFiles)
+    .pipe(docco())
+    .pipe(gulp.dest(docTestDest));
+  gulp.src(devFiles)
     .pipe(docco())
     .pipe(gulp.dest(docDevDest));
 });
 
 
 gulp.task(<span class="hljs-string">'clean'</span>, (done) =&gt; {
-    <span class="hljs-keyword">var</span> del = <span class="hljs-built_in">require</span>(<span class="hljs-string">'del'</span>);
-    del([<span class="hljs-string">'./app/modules'</span>], done);
-});
-
-gulp.task(<span class="hljs-string">'clean-build'</span>, (done) =&gt; {
-    <span class="hljs-keyword">var</span> del = <span class="hljs-built_in">require</span>(<span class="hljs-string">'del'</span>);
-    del([<span class="hljs-string">'./app/build'</span>], done);
+    del([<span class="hljs-string">'./app/modules/*.js'</span>], done);
+    del([<span class="hljs-string">'./app/modules/**/*.js'</span>], done);
+    del([<span class="hljs-string">'./app/build/*.js'</span>], done);
 });</pre></div></div>
             
         </li>

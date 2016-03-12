@@ -1,28 +1,19 @@
 // * gulpfile.babel.js
-// * task automation system
+// run: $>gulp <taskname>
 //
-// * possible continuous usage strategies:<br/>
-// [1] automated test: 'watch' possibly followed by 'build' or 'generate' <br/>
-// [2] manual: traceur/traceur-test etc.; followed by build or generate<br/>
-// 
-// * occasional:<br/>
-// [1] check-versions/update and/or, <br/>
-// [2] generate and/or, <br/>
-// [3] docco
-// 
-// * NOTE: watch-auto-test writes tested components into appDest
-// * NOTE: build, build-min, update and generate write a tested build 
-//   into buildDest <br>
-// * NOTE: There is no explicit task 'task-list'. However cmdline 'gulp task-list'
-//   will produce a complete list of tasks and dependencies to stdout 
-//   (>gulp-task-list.txt for exp.)
+// * NOTE: There is no explicit task 'task-list'. 
+//         However 'gulp task-list' will produce a complete list 
+//         of tasks and dependencies to stdout
+//         pipe to 'gulp-task-list.txt' for exp.
 
- 
-// imported task components
+
+// dependencies for gulpfile 
 var gulp = require("gulp");
-var changed = require('gulp-changed');
-var jshint = require('gulp-jshint');
+var tslint = require("gulp-tslint");
 var docco = require('gulp-docco');
+var del = require('del');
+// additional
+var jshint = require('gulp-jshint');
 var sass = require('gulp-sass');
 var traceur = require('gulp-traceur');
 var concat = require('gulp-concat');
@@ -33,18 +24,38 @@ var exec = require('child_process').exec;
 require('gulp-task-list')(gulp);
 var typescript = require('gulp-typescript');
 var tsconfig = require('./tsconfig.json');
-var tslint = require("gulp-tslint");
  
-
-
 
 
 // directory/file glob-patterns
 var tsFiles = [
-  './app/modules_ts/*.ts', 
-  './app/modules_ts/**/*.ts' 
+  './app/modules-ts/*.ts', 
+  './app/modules-ts/**/*.ts'
 ];
-var srcFiles = [
+var tsTestFiles = [
+  './test/modules-ts/*.spec.ts.js', 
+  './test/modules-ts/**/*.spec.ts.js' 
+];
+// only for use by gulp docco - see README-docs-ts.md
+var tsjsFiles = [
+  './app/modules-ts/*.ts.js', 
+  './app/modules-ts/**/*.ts.js'
+];
+var tsjsTestFiles = [
+  './test/modules-ts/*.spec.ts.js', 
+  './test/modules-ts/**/*.spec.ts.js' 
+];
+var testFiles = [
+  './test/modules/*.spec.js', 
+  './test/modules/**/*.spec.js' 
+];
+var devFiles = [
+  './gulpfile.js', 
+];
+
+
+// additional directory/file glob-patterns
+var es6Files = [
   './app/modules_es6/*.js', 
   './app/modules_es6/**/*.js' 
 ];
@@ -52,18 +63,18 @@ var appFiles = [
   './app/modules/*.js', 
   './app/modules/**/*.js' 
 ];
-var testFiles = [
-  './test/spec_es6/*.js', 
+var utilFiles_ts = [
+  './test/utils_ts/*.js', 
+];
+
+var utilFiles_es6 = [
+  './test/utils_es6/*.js', 
 ];
 var utilFiles = [
-  './test/utils_es6/*.js', 
+  './test/utils/*.js', 
 ];
 var styleFiles = [
   './app/styles/scss/*.scss'
-];
-var devFiles = [
-  './gulpfile.js', 
-  './index.js' 
 ];
 var templateFiles = [
   './app/views/templates/*.html', 
@@ -80,39 +91,94 @@ var webglDefsFiles = [
 
 
 // write destinations
-var appDest = './app/modules';
-var appES6Dest = './app/modules_es6';
-var buildDest = './app/build';
-var testDest = './test/spec';
-var utilDest = './test/utils';
-var cssDest = './app/styles/css';
-var docDest = './docs/modules';
-var docTestDest = './docs/test/spec';
-var docUtilDest = './docs/test/utils';
-var docDevDest = './docs/dev';
-var templatesDest = './app/views/';
+var appDest = './app/modules/',
+    appDest_es6 = './app/modules_es6/',
+    testDest = './test/modules/',
+    testDest_es6 = './test/modules_es6/',
+    docDest = './docs/app',
+    docTestDest = './docs/test',
+    docDevDest = './docs/dev',
+// additional
+    buildDest = './app/build',
+    utilDest = './test/utils',
+    cssDest = './app/styles/css',
+    docUtilDest = './docs/test/utils',
+    templatesDest = './app/views/';
 
 
 
 
+// task - ts2js: modules_ts/x.ts -> modules/x.js
+// NOTE: default task!
+gulp.task('default', ['ts2js']);
+gulp.task('ts2js', () => {
+    var typescript = require('gulp-typescript'),
+        tscConfig = require('./tsconfig.json');
 
-// default task - generate - full composition transpilation and build:<br>
-gulp.task("default", ['traceur', 'clean', 'build', 'build-min']);
+    var tsResult = gulp
+        .src(tsFiles)
+        .pipe(tslint())
+        .pipe(tslint.report("verbose"))
+        .pipe(typescript(tscConfig.compilerOptions));
 
+    if(tscConfig.compilerOptions.target === 'es5'){
+        return tsResult.js.pipe(gulp.dest(appDest));
+    }
+    return tsResult.js.pipe(gulp.dest(appDest_es6));
+});
 
-// task - watch:<br>
-// * watch srcFiles - apply traceur
-// * watch testFiles - apply traceur-test
-// * watch utilFiles - apply traceur-util
-// * watch styleFiles - apply sass
-gulp.task('watch', (event) => {
-  gulp.watch(srcFiles, ['traceur']);
-  gulp.watch(testFiles, ['traceur-test']);
-  gulp.watch(utilFiles, ['traceur-util']);
-  gulp.watch(styleFiles, ['sass']);
+// task - ts2js-test: test/modules_ts/x.spec.ts -> 
+// test/modules/x.spec.js
+gulp.task('ts2js-test', () => {
+    var typescript = require('gulp-typescript');
+    var tscConfig = require('./tsconfig.json');
+
+    var tsResult = gulp
+        .src(tsTestFiles)
+        .pipe(tslint())
+        .pipe(tslint.report("verbose"))
+        .pipe(typescript(tscConfig.compilerOptions));
+
+    if(tscConfig.compilerOptions.target === 'es5'){
+        return tsResult.js.pipe(gulp.dest(testDest));
+    }
+    return tsResult.js.pipe(gulp.dest(testDest_es6));
 });
 
 
+// task - docco:<br>
+// generate side-by-side: L comments with R source (configurable)
+// NOTE: docco does not process ts-files, so a temporary
+// ts.js-file is provided for docco-only processing usage
+// These files are in 'tsjsFiles' and 'tsjsTestFiles'
+gulp.task('docco', () =>{
+  gulp.src(tsFiles)
+    .pipe(docco())
+    .pipe(gulp.dest(docDest));
+  gulp.src(tsTestFiles)
+    .pipe(docco())
+    .pipe(gulp.dest(docTestDest));
+  gulp.src(tsjsFiles)
+    .pipe(docco())
+    .pipe(gulp.dest(docDest));
+  gulp.src(tsjsTestFiles)
+    .pipe(docco())
+    .pipe(gulp.dest(docTestDest));
+  gulp.src(devFiles)
+    .pipe(docco())
+    .pipe(gulp.dest(docDevDest));
+});
+
+
+gulp.task('clean', (done) => {
+    del(['./app/modules/*.js'], done);
+    del(['./app/modules/**/*.js'], done);
+    del(['./app/build/*.js'], done);
+});
+
+
+
+// additional tasks
 // task - tslint:<br>
 gulp.task("tslint", () =>
     gulp.src(tsFiles)
@@ -120,21 +186,6 @@ gulp.task("tslint", () =>
         .pipe(tslint.report("verbose"))
 );
 
-// task - ts2js:<br>
-// transpile typescript srcFiles to ES5/es6 appFiles - uses
-// typescript tsc transpiler
-gulp.task('ts2js', () => {
-    var tsResult = gulp
-        .src(tsFiles)
-        .pipe(tslint())
-        .pipe(tslint.report("verbose"))
-        .pipe(typescript(tsconfig.compilerOptions));
-
-    if(tsconfig.compilerOptions.target === 'es6'){
-        return tsResult.js.pipe(gulp.dest(appES6Dest));
-    }
-    return tsResult.js.pipe(gulp.dest(appDest));
-});
 
 // task - traceur:<br>
 // transpile ES6 srcFiles to ES5 appFiles - uses google traceur transpiler
@@ -232,25 +283,6 @@ gulp.task('webgl-defs', () => {
 });
 
 
-// task - docco:<br>
-// generate side-by-side: L comments with R source (configurable)
-gulp.task('docco', () =>{
-  gulp.src(srcFiles)
-    .pipe(docco())
-    .pipe(gulp.dest(docDest));
-  gulp.src(testFiles)
-    .pipe(docco())
-    .pipe(gulp.dest(docTestDest));
-  gulp.src(utilFiles)
-    .pipe(docco())
-    .pipe(gulp.dest(docUtilDest));
-  gulp.src(devFiles)
-    .pipe(docco())
-    .pipe(gulp.dest(docDevDest));
-});
-
-
-
 // task install:<br>
 // installs all project dev-dependencies and then dependencies
 // * NOTE: assumes that npm is already installed or is global
@@ -264,26 +296,11 @@ gulp.task('npm-install', () => {
   exec('npm install --save-dev');
 });
 
-// task bower-install:<br>
-// installs app-dependencies listed in bower.json 
-// writes to directory given in ./.bowerrc (usually './app/libs') 
-// If no directory is given bower writes to './bower_components'
-// * NOTE: useful policy is to use something like the following in .bowerrc: 
-// ```javascript
-// {
-//   "directory": "./app/libs", 
-//   "json": "./bower.json"  
-// }```
-gulp.task('bower-install', () => {
-  exec('bower install -S');
-});
-
-
 
 // task - check-versions:<br>
 // check for more recent app-versions then in app/libs, and
 // check for more recent dev-versions then in node_modules
-gulp.task('check-versions', ['check-npm', 'check-bower']);
+gulp.task('check-versions', ['check-npm']);
 
 // task - check-npm:<br>
 // check for more recent dev-versions then in node_modules
@@ -297,17 +314,6 @@ gulp.task('check-npm', () =>{
     if(err){console.log(err);}
   });
 });
-
-// task - check-bower:<br>
-// check for more recent app-versions then in app/libs
-gulp.task('check-bower', () =>{
-  exec('bower list', (err, stdout, stderr) => {
-    console.log("\n" + stdout);
-    console.log("\n" + stderr);
-    if(err){console.log(err);}
-  });
-});
-
 
 
 // task - save-versions:<br>
@@ -366,10 +372,3 @@ gulp.task('build-min', () => {
 gulp.task('generate', ['sass', 'templates', 'traceur', 'build', 'build-min', 'docco']);
 
 
-
-
-// task - clean:<br>
-// clean ./app/build
-gulp.task('clean', () => {
-  exec('rm ./app/build/*.js');
-});

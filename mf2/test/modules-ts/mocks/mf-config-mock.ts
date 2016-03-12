@@ -17,7 +17,7 @@ export interface Config {
 };
 
 export const CONFIG:Config = {
-  test: false,
+  test: true,
   hostG: 'localhost',
   portG: 8080,
   hostP: 'localhost',

@@ -12,13 +12,15 @@
   <script src="node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js"></script> 
   <script src="node_modules/jasmine-core/lib/jasmine-core/boot.js"></script> 
 
-
   <!-- system.js import -->
   <script src="jspm_packages/system.js"></script>
 
   <!-- system-jspm import -->
   <script src="config.js"></script>
 
+</head>
+
+<body>
   <!-- import test-spec modules -->
   <script>
     "use strict";
@@ -35,11 +37,15 @@
     Promise.all(
     [
       'test/modules/unit/mf-config.spec.js', 
+      'test/modules/unit/narrative.spec.js',
+      'test/modules/unit/components/producer-component.spec.js', 
+      'test/modules/e2e/producer-component-e2e.spec.js' 
     ].map(x => System.import(x)))
     .then((modules) => {
       var p,q;
       console.log('test modules loaded and running...');
       console.log(`modules is array? = ${Array.isArray(modules)}`);
+      console.log(`running main test-function in each module`);
       for(var p in modules){
         console.log(`modules has property ${p}`);
         for(var q in modules[p]){
@@ -55,8 +61,5 @@
     });
   </script>
 
-</head>
-
-<body>
 </body>
 </html>
