@@ -6,8 +6,12 @@ export function main() {
   console.log('describe configuration-component mf-config');
   describe('mf-config-spec', () => {
     beforeEachProviders(() => [
-      CONFIG
     ]);
+
+    // test
+    it('should define property test', () => {
+      expect(CONFIG['test']).toBeDefined();
+    });
 
     // Genotype
     it('should define property hostG', () => {

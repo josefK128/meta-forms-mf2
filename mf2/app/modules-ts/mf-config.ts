@@ -1,5 +1,8 @@
 // mf-config.ts
-import {OpaqueToken} from 'angular2/core';
+// use OpaqueToken MF_CONFIG in provide(MF_CONFIG, {useValue: CONFIG})
+// where CONFIG is the const implementation of the interface Config
+
+import {OpaqueToken, Injectable} from 'angular2/core';
 
 export let MF_CONFIG = new OpaqueToken('mf-config');
 

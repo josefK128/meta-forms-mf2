@@ -4,17 +4,26 @@
 * [a] write test in typescript (or javascript - skip [b])
 * [b] compile to javascript via 'gulp ts2js-test' (or using tsc directly)
 * [c] add the js-file-path to the array arg of Promise.all in test/index.html
-* [d] run the tests using the index.html URL or by running test.sh (see next)
+* [d1] run the all the tests in default browser:
+  * $> gulp test
+* [d2] run the only unit tests in default browser:
+  * $> gulp unit
+
+* NOTE: for other browsers:
+  * use the URLs for ./test/index.html or ./test/index_unit.html respectively
 
 
+* NOTE: without gulp:
+* [~d1] $> bash test.sh (for cygwin - path may need to be edited) 
+* [~d1w] $> test.bat (for windows - path may need to be edited) 
+  * kill server by ctrl-c
+* [~d2] $> bash test_unit.sh (for cygwin - path may need to be edited)
+* [~d2w] $> test_unit.bat (for windows - path may need to be edited) 
 
-* [2] run tests in browser by either:
-* [a] browser - request URL in address bar: 'http://<domain>/<pathToApp>/<app>/test/index.html'
+* NOTE: edit bash cygstart to 'xdg-open' for linux
+  * default browser
+* NOTE: edit bash cygstart to 'open' for mac 
+  * default-browser as example - change browser as desired via 'open -a <name>' 
 
-  or
 
-* [b] $> bash test.sh (for cygwin - the path will need to be edited)
-* Note edit the command to 'xdg-open' for linux 
-* Note edit the command to 'open' for mac 
-* Note edit the command to 'cmd /c start' for windows 
 

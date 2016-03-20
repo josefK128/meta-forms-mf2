@@ -4,6 +4,9 @@ import {beforeEach, beforeEachProviders, afterEach} from 'angular2/testing';
 import {Injectable, provide} from 'angular2/core';
 import promise from 'es6-promise';
 import {MF_CONFIG, Config, CONFIG} from '../../mocks/mf-config-mock.js';
+import {G} from '../../mocks/g-service-mock.js';
+import {P} from '../../mocks/p-service-mock.js';
+import {L} from '../../mocks/l-service-mock.js';
 import {Producer} from '../../../../app/modules/components/producer-component.js';
 
 
@@ -28,22 +31,23 @@ var axiom1 = { axiom: [2,4],
     expect_genotype1 = 6,
     expect_phenotype1 = 3,
     expect_genotype2 = 15,
-    expect_phenotype2 = 30;
+    expect_phenotype2 = 30,
+    producer = new Producer(CONFIG, G, P, L);
 
 
 export function main() {
-  var producer;
 
   console.log('describe producer-component-spec');
   describe('producer-component-spec', () => {
     beforeEachProviders(() => [
-      provide(MF_CONFIG, {useValue: CONFIG})
     ]);
 
     beforeEach(() => {
       // diagnostics
+      console.log('\n\n %*%%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%');
       console.log(`producer.spec: CONFIG.test = ${CONFIG.test}`);
-      producer = new Producer(CONFIG);
+      console.log(`producer.spec: G = ${G}`);
+      console.log('\n\n %*%%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%');
     });
 
     it('should be defined after construction from class Producer', () => {
@@ -80,7 +84,7 @@ export function main() {
     });
 
     afterEach(() => {
-      producer = undefined;
+      axiom1 = axiom1;
     });
   }); //describe
 }

@@ -1,19 +1,18 @@
-System.register(['angular2/testing', 'angular2/core', '../../mocks/mf-config-mock.js', '../../../../app/modules/components/producer-component.js'], function(exports_1, context_1) {
+System.register(['angular2/testing', '../../mocks/mf-config-mock.js', '../../mocks/g-service-mock.js', '../../mocks/p-service-mock.js', '../../mocks/l-service-mock.js', '../../../../app/modules/components/producer-component.js'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var testing_1, testing_2, core_1, mf_config_mock_js_1, producer_component_js_1;
-    var axiom1, axiom2, genotype1, genotype2, expect_genotype1, expect_phenotype1, expect_genotype2, expect_phenotype2;
+    var testing_1, testing_2, mf_config_mock_js_1, g_service_mock_js_1, p_service_mock_js_1, l_service_mock_js_1, producer_component_js_1;
+    var axiom1, axiom2, genotype1, genotype2, expect_genotype1, expect_phenotype1, expect_genotype2, expect_phenotype2, producer;
     function main() {
-        var producer;
         console.log('describe producer-component-spec');
         testing_1.describe('producer-component-spec', function () {
-            testing_2.beforeEachProviders(function () { return [
-                core_1.provide(mf_config_mock_js_1.MF_CONFIG, { useValue: mf_config_mock_js_1.CONFIG })
-            ]; });
+            testing_2.beforeEachProviders(function () { return []; });
             testing_2.beforeEach(function () {
                 // diagnostics
+                console.log('\n\n %*%%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%');
                 console.log("producer.spec: CONFIG.test = " + mf_config_mock_js_1.CONFIG.test);
-                producer = new producer_component_js_1.Producer(mf_config_mock_js_1.CONFIG);
+                console.log("producer.spec: G = " + g_service_mock_js_1.G);
+                console.log('\n\n %*%%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%');
             });
             testing_1.it('should be defined after construction from class Producer', function () {
                 testing_1.expect(producer).toBeDefined();
@@ -43,7 +42,7 @@ System.register(['angular2/testing', 'angular2/core', '../../mocks/mf-config-moc
                 });
             });
             testing_2.afterEach(function () {
-                producer = undefined;
+                axiom1 = axiom1;
             });
         }); //describe
     }
@@ -54,11 +53,17 @@ System.register(['angular2/testing', 'angular2/core', '../../mocks/mf-config-moc
                 testing_1 = testing_1_1;
                 testing_2 = testing_1_1;
             },
-            function (core_1_1) {
-                core_1 = core_1_1;
-            },
             function (mf_config_mock_js_1_1) {
                 mf_config_mock_js_1 = mf_config_mock_js_1_1;
+            },
+            function (g_service_mock_js_1_1) {
+                g_service_mock_js_1 = g_service_mock_js_1_1;
+            },
+            function (p_service_mock_js_1_1) {
+                p_service_mock_js_1 = p_service_mock_js_1_1;
+            },
+            function (l_service_mock_js_1_1) {
+                l_service_mock_js_1 = l_service_mock_js_1_1;
             },
             function (producer_component_js_1_1) {
                 producer_component_js_1 = producer_component_js_1_1;
@@ -78,7 +83,7 @@ System.register(['angular2/testing', 'angular2/core', '../../mocks/mf-config-moc
                 g_rule: '*',
                 p_rule: 2.0,
                 genotype: 15,
-                phenotype: 30 }, expect_genotype1 = 6, expect_phenotype1 = 3, expect_genotype2 = 15, expect_phenotype2 = 30;
+                phenotype: 30 }, expect_genotype1 = 6, expect_phenotype1 = 3, expect_genotype2 = 15, expect_phenotype2 = 30, producer = new producer_component_js_1.Producer(mf_config_mock_js_1.CONFIG, g_service_mock_js_1.G, p_service_mock_js_1.P, l_service_mock_js_1.L);
         }
     }
 });

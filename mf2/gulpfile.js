@@ -7,6 +7,7 @@ var gulp = require('gulp');
 var tslint = require("gulp-tslint");
 var docco = require('gulp-docco');
 var del = require('del');
+var exec = require('child_process').exec;
 
 
 
@@ -15,9 +16,17 @@ var tsFiles = [
   './app/modules-ts/*.ts', 
   './app/modules-ts/**/*.ts'
 ];
+var jsFiles = [
+  './app/modules/*.js', 
+  './app/modules/**/*.js'
+];
 var tsTestFiles = [
   './test/modules-ts/*.spec.ts', 
   './test/modules-ts/**/*.spec.ts' 
+];
+var jsTestFiles = [
+  './test/modules/*.js', 
+  './test/modules/**/*.js'
 ];
 var tsTestMocks = [
   './test/modules-ts/mocks/*.ts' 
@@ -29,7 +38,8 @@ var tsjsFiles = [
 ];
 var tsjsTestFiles = [
   './test/modules-ts/*.spec.ts.js', 
-  './test/modules-ts/**/*.spec.ts.js' 
+  './test/modules-ts/**/*.spec.ts.js', 
+  './test/modules-ts/**/*.ts.js' 
 ];
 var testFiles = [
   './test/modules/*.spec.js', 
@@ -49,6 +59,23 @@ var appDest = './app/modules/',
     docDest = './docs/app',
     docTestDest = './docs/test',
     docDevDest = './docs/dev';
+    transpiledDest = './docs/transpiled/app';
+    transpiledTestDest = './docs/transpiled/test';
+
+
+
+
+// tasks
+
+// test - all
+gulp.task('test', () => {
+  exec('bash test.sh');
+});
+
+// test - unit tests only - doesn't require server startup
+gulp.task('test-unit', () => {
+  exec('bash test-unit.sh');
+});
 
 
 
@@ -133,6 +160,12 @@ gulp.task('ts2js-mock', () => {
 // ts.js-file is provided for docco-only processing usage
 // These files are in 'tsjsFiles' and 'tsjsTestFiles'
 gulp.task('docco', () =>{
+  gulp.src(jsFiles)
+    .pipe(docco())
+    .pipe(gulp.dest(transpiledDest));
+  gulp.src(jsTestFiles)
+    .pipe(docco())
+    .pipe(gulp.dest(transpiledTestDest));
   gulp.src(tsFiles)
     .pipe(docco())
     .pipe(gulp.dest(docDest));

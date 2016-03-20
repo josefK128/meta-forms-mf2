@@ -20,8 +20,8 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                 hostL: 'localhost',
                 portL: 8082,
                 period: 5000,
-                cbg: function (o) { document.getElementById('display_g').innerHTML = "genotype = " + o.genotype; },
-                cbp: function (o) { document.getElementById('display_p').innerHTML = "phenotype = " + o.phenotype; }
+                cbg: function (o) { o = o; },
+                cbp: function (o) { o = o; }
             });
         }
     }

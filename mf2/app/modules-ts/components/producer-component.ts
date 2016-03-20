@@ -4,9 +4,6 @@
 import {Component, Injectable} from 'angular2/core';
 import promise from 'es6-promise';
 import {Promise} from 'es6-promise';
-import {G} from '../services/g-service.js'; // Genotype-proxy class
-import {P} from '../services/p-service.js'; // Phenotype-proxy class
-import {L} from '../services/l-service.js'; // Log-proxy class
 
 
 @Component({
@@ -27,7 +24,7 @@ export class Producer {
   timeoutG;
   timeoutP;
 
-  constructor(config) {
+  constructor(config, G, P, L) {
 
     var hostG = config.hostG || 'localhost', // def 'localhost'
         portG = config.portG || 8080,  // default 8080
@@ -37,8 +34,9 @@ export class Producer {
         portL = config.portL || 8082;  // default 8082
 
     // diagnostics
-    console.log(`&&&&&&&&&&&&&&&&&&&&`);
+    console.log(`\n\n&&&&&&&&&&&&&&&&&&&&`);
     console.log(`producer: config.test = ${config.test}`);
+    console.log(`producer: G = ${G}`);
     console.log(`&&&&&&&&&&&&&&&&&&&&`);
 
     // config
@@ -54,29 +52,9 @@ export class Producer {
     this.resolveP = (o) => {o = o;};
 
     // create proxies if !test - else create mocks
-    if(this.config.test === false){
-      this.g = new G(this, hostG, portG, hostL, portL);  // g-proxy instance 
-      this.p = new P(this, hostP, portP, hostL, portL);  // p-proxy instance
-      this.log = new L(hostL, portL);  // instance of l-proxy
-    }else{
-      this.g = {
-        emit: (o) => {
-          this.timeoutP = setTimeout(() => {
-            this.receiveG(o);
-          }, 1000);
-        }
-      };
-      this.p = {
-        emit: (o) => {
-          this.timeoutP = setTimeout(() => {
-            this.receiveP(o);
-          }, 1000);
-        }
-      };
-      this.log = { 
-        emit: (o) => {o = o;}
-      };
-    }
+    this.g = new G(this, this.config);  // g-proxy instance 
+    this.p = new P(this, this.config);  // p-proxy instance
+    this.log = new L(this.config);  // instance of l-proxy
   }//ctor
 
 
@@ -137,9 +115,7 @@ export class Producer {
     this.log.emit(msg);
 
     // callback
-    if(this.config.test === false){
-      if(this.cbg){this.cbg(o);};
-    }
+    if(this.cbg){this.cbg(o);};
   }
 
   // called by p-service on receipt of phenotype from Phenotype
@@ -156,9 +132,7 @@ export class Producer {
     this.log.emit(msg);
 
     // callback
-    if(this.config.test === false){
-      if(this.cbp){this.cbp(o);};
-    }
+    if(this.cbp){this.cbp(o);};
   }
 }
 

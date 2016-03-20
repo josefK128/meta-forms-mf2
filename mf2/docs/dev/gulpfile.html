@@ -49,7 +49,7 @@ run: $&gt;gulp <taskname></p>
 <span class="hljs-keyword">var</span> tslint = <span class="hljs-built_in">require</span>(<span class="hljs-string">"gulp-tslint"</span>);
 <span class="hljs-keyword">var</span> docco = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp-docco'</span>);
 <span class="hljs-keyword">var</span> del = <span class="hljs-built_in">require</span>(<span class="hljs-string">'del'</span>);
-<span class="hljs-keyword">var</span> jasmine = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp-jasmine'</span>);</pre></div></div>
+<span class="hljs-keyword">var</span> exec = <span class="hljs-built_in">require</span>(<span class="hljs-string">'child_process'</span>).exec;</pre></div></div>
             
         </li>
         
@@ -68,9 +68,20 @@ run: $&gt;gulp <taskname></p>
   <span class="hljs-string">'./app/modules-ts/*.ts'</span>, 
   <span class="hljs-string">'./app/modules-ts/**/*.ts'</span>
 ];
+<span class="hljs-keyword">var</span> jsFiles = [
+  <span class="hljs-string">'./app/modules/*.js'</span>, 
+  <span class="hljs-string">'./app/modules/**/*.js'</span>
+];
 <span class="hljs-keyword">var</span> tsTestFiles = [
-  <span class="hljs-string">'./test/modules-ts/*.spec.ts.js'</span>, 
-  <span class="hljs-string">'./test/modules-ts/**/*.spec.ts.js'</span> 
+  <span class="hljs-string">'./test/modules-ts/*.spec.ts'</span>, 
+  <span class="hljs-string">'./test/modules-ts/**/*.spec.ts'</span> 
+];
+<span class="hljs-keyword">var</span> jsTestFiles = [
+  <span class="hljs-string">'./test/modules/*.js'</span>, 
+  <span class="hljs-string">'./test/modules/**/*.js'</span>
+];
+<span class="hljs-keyword">var</span> tsTestMocks = [
+  <span class="hljs-string">'./test/modules-ts/mocks/*.ts'</span> 
 ];</pre></div></div>
             
         </li>
@@ -92,7 +103,8 @@ run: $&gt;gulp <taskname></p>
 ];
 <span class="hljs-keyword">var</span> tsjsTestFiles = [
   <span class="hljs-string">'./test/modules-ts/*.spec.ts.js'</span>, 
-  <span class="hljs-string">'./test/modules-ts/**/*.spec.ts.js'</span> 
+  <span class="hljs-string">'./test/modules-ts/**/*.spec.ts.js'</span>, 
+  <span class="hljs-string">'./test/modules-ts/**/*.ts.js'</span> 
 ];
 <span class="hljs-keyword">var</span> testFiles = [
   <span class="hljs-string">'./test/modules/*.spec.js'</span>, 
@@ -119,16 +131,13 @@ run: $&gt;gulp <taskname></p>
     appDest_es6 = <span class="hljs-string">'./app/modules_es6/'</span>,
     testDest = <span class="hljs-string">'./test/modules/'</span>,
     testDest_es6 = <span class="hljs-string">'./test/modules_es6/'</span>,
+    mockDest = <span class="hljs-string">'./test/modules/mocks/'</span>,
+    mockDest_es6 = <span class="hljs-string">'./test/modules_es6/mocks'</span>,
     docDest = <span class="hljs-string">'./docs/app'</span>,
     docTestDest = <span class="hljs-string">'./docs/test'</span>,
     docDevDest = <span class="hljs-string">'./docs/dev'</span>;
-
-
-
-gulp.task(<span class="hljs-string">'default'</span>, [<span class="hljs-string">'ts2js'</span>]);
-
-
-gulp.task(<span class="hljs-string">'test'</span>, () =&gt;</pre></div></div>
+    transpiledDest = <span class="hljs-string">'./docs/transpiled/app'</span>;
+    transpiledTestDest = <span class="hljs-string">'./docs/transpiled/test'</span>;</pre></div></div>
             
         </li>
         
@@ -139,13 +148,62 @@ gulp.task(<span class="hljs-string">'test'</span>, () =&gt;</pre></div></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>gulp-jasmine works on filepaths so don’t have any plugins before it </p>
+              <p>tasks</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  gulp.src(testFiles).pipe(jasmine())
-);
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>test - all</p>
 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>gulp.task(<span class="hljs-string">'test'</span>, () =&gt; {
+  exec(<span class="hljs-string">'node ../app/index 0'</span>);
+  setTimeout(() =&gt; {
+    exec(<span class="hljs-string">'cygstart http://localhost/meta-forms-mf2/mf2/test/index.html'</span>);
+  }, <span class="hljs-number">2000</span>);
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>test - unit tests only - doesn’t require server startup</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>gulp.task(<span class="hljs-string">'unit'</span>, () =&gt; {
+  exec(<span class="hljs-string">'cygstart http://localhost/meta-forms-mf2/mf2/test/index_unit.html'</span>);
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>task - ts2js: modules_ts/x.ts -&gt; modules/x.js
+NOTE: default task!</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>gulp.task(<span class="hljs-string">'default'</span>, [<span class="hljs-string">'ts2js'</span>]);
 gulp.task(<span class="hljs-string">'ts2js'</span>, () =&gt; {
     <span class="hljs-keyword">var</span> typescript = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp-typescript'</span>),
         tscConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./tsconfig.json'</span>);
@@ -160,9 +218,38 @@ gulp.task(<span class="hljs-string">'ts2js'</span>, () =&gt; {
         <span class="hljs-keyword">return</span> tsResult.js.pipe(gulp.dest(appDest));
     }
     <span class="hljs-keyword">return</span> tsResult.js.pipe(gulp.dest(appDest_es6));
-});
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>task - ts2js-test: </p>
 
-gulp.task(<span class="hljs-string">'ts2js-test'</span>, () =&gt; {
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>gulp.task(<span class="hljs-string">'ts2js-test'</span>, [<span class="hljs-string">'ts2js-mock'</span>, <span class="hljs-string">'ts2js-spec'</span>]);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>task - ts2js-spec: test/modules_ts/x.spec.ts -&gt; 
+test/modules/x.spec.js</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>gulp.task(<span class="hljs-string">'ts2js-spec'</span>, () =&gt; {
     <span class="hljs-keyword">var</span> typescript = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp-typescript'</span>);
     <span class="hljs-keyword">var</span> tscConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./tsconfig.json'</span>);
 
@@ -181,18 +268,85 @@ gulp.task(<span class="hljs-string">'ts2js-test'</span>, () =&gt; {
         </li>
         
         
-        <li id="section-7">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>task - ts2js-spec: test/modules_ts/x.spec.ts -&gt; 
+test/modules/x.spec.js</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>gulp.task(<span class="hljs-string">'ts2js-spec-no-tslint'</span>, () =&gt; {
+    <span class="hljs-keyword">var</span> typescript = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp-typescript'</span>);
+    <span class="hljs-keyword">var</span> tscConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./tsconfig.json'</span>);
+
+    <span class="hljs-keyword">var</span> tsResult = gulp
+        .src(tsTestFiles)
+        .pipe(typescript(tscConfig.compilerOptions));
+
+    <span class="hljs-keyword">if</span>(tscConfig.compilerOptions.target === <span class="hljs-string">'es5'</span>){
+        <span class="hljs-keyword">return</span> tsResult.js.pipe(gulp.dest(testDest));
+    }
+    <span class="hljs-keyword">return</span> tsResult.js.pipe(gulp.dest(testDest_es6));
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>task - ts2js-mock: test/modules_ts/mocks/x.ts -&gt; 
+test/modules/mocks/x.js</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>gulp.task(<span class="hljs-string">'ts2js-mock'</span>, () =&gt; {
+    <span class="hljs-keyword">var</span> typescript = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp-typescript'</span>);
+    <span class="hljs-keyword">var</span> tscConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./tsconfig.json'</span>);
+
+    <span class="hljs-keyword">var</span> tsResult = gulp
+        .src(tsTestMocks)
+        .pipe(tslint())
+        .pipe(tslint.report(<span class="hljs-string">"verbose"</span>))
+        .pipe(typescript(tscConfig.compilerOptions));
+
+    <span class="hljs-keyword">if</span>(tscConfig.compilerOptions.target === <span class="hljs-string">'es5'</span>){
+        <span class="hljs-keyword">return</span> tsResult.js.pipe(gulp.dest(mockDest));
+    }
+    <span class="hljs-keyword">return</span> tsResult.js.pipe(gulp.dest(mockDest_es6));
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>task - docco:<br>
-generate side-by-side: L comments with R source (configurable)</p>
+generate side-by-side: L comments with R source (configurable)
+NOTE: docco does not process ts-files, so a temporary
+ts.js-file is provided for docco-only processing usage
+These files are in ‘tsjsFiles’ and ‘tsjsTestFiles’</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>gulp.task(<span class="hljs-string">'docco'</span>, () =&gt;{
+  gulp.src(jsFiles)
+    .pipe(docco())
+    .pipe(gulp.dest(transpiledDest));
+  gulp.src(jsTestFiles)
+    .pipe(docco())
+    .pipe(gulp.dest(transpiledTestDest));
   gulp.src(tsFiles)
     .pipe(docco())
     .pipe(gulp.dest(docDest));

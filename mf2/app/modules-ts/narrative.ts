@@ -1,10 +1,13 @@
 // narrative.ts
 import 'reflect-metadata';
+import promise from 'es6-promise';
 import {Component, View, Injectable, Inject, provide} from 'angular2/core';
 import {bootstrap} from 'angular2/platform/browser';
 import {Producer} from './components/producer-component.js';
 import {MF_CONFIG, Config, CONFIG} from './mf-config.js';
-import promise from 'es6-promise';
+import {G} from './services/g-service.js';
+import {P} from './services/p-service.js';
+import {L} from './services/l-service.js';
 
 
 @Component({
@@ -27,12 +30,9 @@ export class Narrative {
     constructor(@Inject(MF_CONFIG) config:Config) {
       this.name = 'foo';
       this.config = config;
-      
-      // diagnostics
-      console.log(`narrative: config.test = ${config.test}`);
-     
-      this.producer = new Producer(config);
-      console.log(`this.producer.emitG = ${this.producer.emitG}`);
+
+      // create a Producer
+      this.producer = new Producer(config, G, P, L);
     }
 
 

@@ -17,18 +17,18 @@ export class G {
   log : L;
   genotype;
 
-  constructor(client, _hostG, _portG, _hostL, _portL) {
-    var hostG = _hostG || 'localhost',
-        portG = _portG || 8080, // default 8080
-        hostL = _hostL || 'localhost', 
-        portL = _portL || 8082,  // default 8082
+  constructor(client, config) {
+    var hostG = config.hostG || 'localhost',
+        portG = config.portG || 8080, // default 8080
+        hostL = config.hostL || 'localhost', 
+        portL = config.portL || 8082,  // default 8082
         urlG = `http://${hostG}:${portG}`;
 
     // instance properties 
     this.client = client;
     this.name = 'g';
     this.genotype = sio.connect(urlG);
-    this.log = new L(hostL, portL);
+    this.log = new L(config);
 
     // Rx: from Genotype service - name is string
     const name_stream = Rx.Observable.fromEvent(this.genotype, 'name')

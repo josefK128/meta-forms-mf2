@@ -25,7 +25,7 @@ export const CONFIG:Config = {
   hostL: 'localhost',
   portL: 8082,
   period: 5000,
-  cbg: (o) => {document.getElementById('display_g').innerHTML = `genotype = ${o.genotype}`;},
-  cbp: (o) => {document.getElementById('display_p').innerHTML = `phenotype = ${o.phenotype}`;} 
+  cbg: (o) => {o=o;},
+  cbp: (o) => {o=o;} 
 };
 

@@ -1,3 +1,6 @@
+// mf-config.ts
+// use OpaqueToken MF_CONFIG in provide(MF_CONFIG, {useValue: CONFIG})
+// where CONFIG is the const implementation of the interface Config
 System.register(['angular2/core'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;

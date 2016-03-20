@@ -17,17 +17,17 @@ export class P {
   log : L;
   phenotype;
 
-  constructor(client, _hostP, _portP, _hostL, _portL) {
-    var hostP = _hostP || 'localhost',
-        portP = _portP || 8081, // default 8081
-        hostL = _hostL || 'localhost', 
-        portL = _portL || 8082,  // default 8082
+  constructor(client, config) {
+    var hostP = config.hostP || 'localhost',
+        portP = config.portP || 8081, // default 8081
+        hostL = config.hostL || 'localhost', 
+        portL = config.portL || 8082,  // default 8082
         urlP = `http://${hostP}:${portP}`;
 
     this.client = client;
     this.name = 'p';
     this.phenotype = sio.connect(urlP);
-    this.log = new L(hostL, portL);
+    this.log = new L(config);
 
     // Rx: from Phenotype service - name is string
     const name_stream = Rx.Observable.fromEvent(this.phenotype, 'name')

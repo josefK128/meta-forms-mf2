@@ -30,15 +30,15 @@ System.register(['angular2/core', './l-service.js', 'rx', 'socket.io-client'], f
             }],
         execute: function() {
             P = (function () {
-                function P(client, _hostP, _portP, _hostL, _portL) {
+                function P(client, config) {
                     var _this = this;
-                    var hostP = _hostP || 'localhost', portP = _portP || 8081, // default 8081
-                    hostL = _hostL || 'localhost', portL = _portL || 8082, // default 8082
+                    var hostP = config.hostP || 'localhost', portP = config.portP || 8081, // default 8081
+                    hostL = config.hostL || 'localhost', portL = config.portL || 8082, // default 8082
                     urlP = "http://" + hostP + ":" + portP;
                     this.client = client;
                     this.name = 'p';
                     this.phenotype = socket_io_client_1.default.connect(urlP);
-                    this.log = new l_service_js_1.L(hostL, portL);
+                    this.log = new l_service_js_1.L(config);
                     // Rx: from Phenotype service - name is string
                     var name_stream = rx_1.Rx.Observable.fromEvent(this.phenotype, 'name')
                         .subscribe(function (name) {
@@ -68,7 +68,7 @@ System.register(['angular2/core', './l-service.js', 'rx', 'socket.io-client'], f
                 };
                 P = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [Object, Object, Object, Object, Object])
+                    __metadata('design:paramtypes', [Object, Object])
                 ], P);
                 return P;
             }());

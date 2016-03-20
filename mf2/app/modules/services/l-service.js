@@ -27,8 +27,8 @@ System.register(['angular2/core', 'socket.io-client'], function(exports_1, conte
                 return (new Date().toJSON()).replace(/^.*T/, '').replace(/Z/, '');
             };
             L = (function () {
-                function L(_hostL, _portL) {
-                    var hostL = _hostL || 'localhost', portL = _portL || 8082, url = "http://" + hostL + ":" + portL;
+                function L(config) {
+                    var hostL = config.hostL || 'localhost', portL = config.portL || 8082, url = "http://" + hostL + ":" + portL;
                     this.log = socket_io_client_1.default.connect(url);
                 }
                 L.prototype.emit = function (msg) {
@@ -37,7 +37,7 @@ System.register(['angular2/core', 'socket.io-client'], function(exports_1, conte
                 };
                 L = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [Object, Object])
+                    __metadata('design:paramtypes', [Object])
                 ], L);
                 return L;
             }());

@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'es6-promise', '../services/g-service.js', '../services/p-service.js', '../services/l-service.js'], function(exports_1, context_1) {
+System.register(['angular2/core', 'es6-promise'], function(exports_1, context_1) {
     // producer-component.js 
     'use strict';
     var __moduleName = context_1 && context_1.id;
@@ -11,7 +11,7 @@ System.register(['angular2/core', 'es6-promise', '../services/g-service.js', '..
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, es6_promise_1, g_service_js_1, p_service_js_1, l_service_js_1;
+    var core_1, es6_promise_1;
     var Producer;
     return {
         setters:[
@@ -20,20 +20,10 @@ System.register(['angular2/core', 'es6-promise', '../services/g-service.js', '..
             },
             function (es6_promise_1_1) {
                 es6_promise_1 = es6_promise_1_1;
-            },
-            function (g_service_js_1_1) {
-                g_service_js_1 = g_service_js_1_1;
-            },
-            function (p_service_js_1_1) {
-                p_service_js_1 = p_service_js_1_1;
-            },
-            function (l_service_js_1_1) {
-                l_service_js_1 = l_service_js_1_1;
             }],
         execute: function() {
             Producer = (function () {
-                function Producer(config) {
-                    var _this = this;
+                function Producer(config, G, P, L) {
                     var hostG = config.hostG || 'localhost', // def 'localhost'
                     portG = config.portG || 8080, // default 8080
                     hostP = config.hostP || 'localhost', // def 'localhost'
@@ -41,8 +31,9 @@ System.register(['angular2/core', 'es6-promise', '../services/g-service.js', '..
                     hostL = config.hostL || 'localhost', // def 'localhost'
                     portL = config.portL || 8082; // default 8082
                     // diagnostics
-                    console.log("&&&&&&&&&&&&&&&&&&&&");
+                    console.log("\n\n&&&&&&&&&&&&&&&&&&&&");
                     console.log("producer: config.test = " + config.test);
+                    console.log("producer: G = " + G);
                     console.log("&&&&&&&&&&&&&&&&&&&&");
                     // config
                     this.config = config;
@@ -54,30 +45,9 @@ System.register(['angular2/core', 'es6-promise', '../services/g-service.js', '..
                     this.resolveG = function (o) { o = o; };
                     this.resolveP = function (o) { o = o; };
                     // create proxies if !test - else create mocks
-                    if (this.config.test === false) {
-                        this.g = new g_service_js_1.G(this, hostG, portG, hostL, portL); // g-proxy instance 
-                        this.p = new p_service_js_1.P(this, hostP, portP, hostL, portL); // p-proxy instance
-                        this.log = new l_service_js_1.L(hostL, portL); // instance of l-proxy
-                    }
-                    else {
-                        this.g = {
-                            emit: function (o) {
-                                _this.timeoutP = setTimeout(function () {
-                                    _this.receiveG(o);
-                                }, 1000);
-                            }
-                        };
-                        this.p = {
-                            emit: function (o) {
-                                _this.timeoutP = setTimeout(function () {
-                                    _this.receiveP(o);
-                                }, 1000);
-                            }
-                        };
-                        this.log = {
-                            emit: function (o) { o = o; }
-                        };
-                    }
+                    this.g = new G(this, this.config); // g-proxy instance 
+                    this.p = new P(this, this.config); // p-proxy instance
+                    this.log = new L(this.config); // instance of l-proxy
                 } //ctor
                 // set cbg - genotype callback
                 Producer.prototype.callbackG = function (_cbg) {
@@ -131,12 +101,10 @@ System.register(['angular2/core', 'es6-promise', '../services/g-service.js', '..
                     console.log(msg);
                     this.log.emit(msg);
                     // callback
-                    if (this.config.test === false) {
-                        if (this.cbg) {
-                            this.cbg(o);
-                        }
-                        ;
+                    if (this.cbg) {
+                        this.cbg(o);
                     }
+                    ;
                 };
                 // called by p-service on receipt of phenotype from Phenotype
                 // o is object
@@ -149,22 +117,19 @@ System.register(['angular2/core', 'es6-promise', '../services/g-service.js', '..
                     console.log(msg);
                     this.log.emit(msg);
                     // callback
-                    if (this.config.test === false) {
-                        if (this.cbp) {
-                            this.cbp(o);
-                        }
-                        ;
+                    if (this.cbp) {
+                        this.cbp(o);
                     }
+                    ;
                 };
                 Producer = __decorate([
-                    // Log-proxy class
                     core_1.Component({
                         providers: [
                             es6_promise_1.Promise
                         ]
                     }),
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [Object])
+                    __metadata('design:paramtypes', [Object, Object, Object, Object])
                 ], Producer);
                 return Producer;
             }());

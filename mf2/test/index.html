@@ -21,6 +21,10 @@
 </head>
 
 <body>
+  <narrative style="display:none"></narrative>
+  <div><h2 id='display_g' style="display:none">mf genotype...</h2></div>    
+  <div><h2 id='display_p' style="display:none">mf phenotype...</h2></div>    
+
   <!-- import test-spec modules -->
   <script>
     "use strict";
@@ -30,14 +34,14 @@
         console.log(`M = ${M}`);
       })
       .catch((e) => {
-        console.log(`import of narrative-component caused error: ${e}`);
+        console.log(`import of reflect-metadata caused error: ${e}`);
       });
 
     // load all test-modules
     Promise.all(
     [
       'test/modules/unit/mf-config.spec.js', 
-      'test/modules/unit/narrative.spec.js',
+      'test/modules/unit/narrative.spec.js', 
       'test/modules/unit/components/producer-component.spec.js', 
       'test/modules/e2e/producer-component-e2e.spec.js' 
     ].map(x => System.import(x)))

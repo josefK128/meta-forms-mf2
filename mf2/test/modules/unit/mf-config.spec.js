@@ -5,9 +5,11 @@ System.register(['angular2/testing', '../../../app/modules/mf-config.js'], funct
     function main() {
         console.log('describe configuration-component mf-config');
         testing_1.describe('mf-config-spec', function () {
-            testing_1.beforeEachProviders(function () { return [
-                mf_config_js_1.CONFIG
-            ]; });
+            testing_1.beforeEachProviders(function () { return []; });
+            // test
+            testing_1.it('should define property test', function () {
+                testing_1.expect(mf_config_js_1.CONFIG['test']).toBeDefined();
+            });
             // Genotype
             testing_1.it('should define property hostG', function () {
                 testing_1.expect(mf_config_js_1.CONFIG['hostG']).toBeDefined();

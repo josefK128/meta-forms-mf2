@@ -1,4 +1,4 @@
-System.register(['reflect-metadata', 'angular2/core', 'angular2/platform/browser', './components/producer-component.js', './mf-config.js'], function(exports_1, context_1) {
+System.register(['reflect-metadata', 'angular2/core', 'angular2/platform/browser', './components/producer-component.js', './mf-config.js', './services/g-service.js', './services/p-service.js', './services/l-service.js'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -13,7 +13,7 @@ System.register(['reflect-metadata', 'angular2/core', 'angular2/platform/browser
     var __param = (this && this.__param) || function (paramIndex, decorator) {
         return function (target, key) { decorator(target, key, paramIndex); }
     };
-    var core_1, browser_1, producer_component_js_1, mf_config_js_1;
+    var core_1, browser_1, producer_component_js_1, mf_config_js_1, g_service_js_1, p_service_js_1, l_service_js_1;
     var Narrative;
     return {
         setters:[
@@ -29,16 +29,23 @@ System.register(['reflect-metadata', 'angular2/core', 'angular2/platform/browser
             },
             function (mf_config_js_1_1) {
                 mf_config_js_1 = mf_config_js_1_1;
+            },
+            function (g_service_js_1_1) {
+                g_service_js_1 = g_service_js_1_1;
+            },
+            function (p_service_js_1_1) {
+                p_service_js_1 = p_service_js_1_1;
+            },
+            function (l_service_js_1_1) {
+                l_service_js_1 = l_service_js_1_1;
             }],
         execute: function() {
             Narrative = (function () {
                 function Narrative(config) {
                     this.name = 'foo';
                     this.config = config;
-                    // diagnostics
-                    console.log("narrative: config.test = " + config.test);
-                    this.producer = new producer_component_js_1.Producer(config);
-                    console.log("this.producer.emitG = " + this.producer.emitG);
+                    // create a Producer
+                    this.producer = new producer_component_js_1.Producer(config, g_service_js_1.G, p_service_js_1.P, l_service_js_1.L);
                 }
                 Narrative.prototype.getConfig = function () {
                     return this.config;

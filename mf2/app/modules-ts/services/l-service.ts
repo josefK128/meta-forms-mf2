@@ -15,9 +15,9 @@ var t = () => {
 export class  L {
   log;
 
-  constructor(_hostL, _portL) {
-    var hostL = _hostL || 'localhost',
-        portL = _portL || 8082,
+  constructor(config) {
+    var hostL = config.hostL || 'localhost',
+        portL = config.portL || 8082,
         url = `http://${hostL}:${portL}`;
 
     this.log = sio.connect(url);

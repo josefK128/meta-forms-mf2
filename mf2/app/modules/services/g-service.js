@@ -30,16 +30,16 @@ System.register(['angular2/core', './l-service.js', 'rx', 'socket.io-client'], f
             }],
         execute: function() {
             G = (function () {
-                function G(client, _hostG, _portG, _hostL, _portL) {
+                function G(client, config) {
                     var _this = this;
-                    var hostG = _hostG || 'localhost', portG = _portG || 8080, // default 8080
-                    hostL = _hostL || 'localhost', portL = _portL || 8082, // default 8082
+                    var hostG = config.hostG || 'localhost', portG = config.portG || 8080, // default 8080
+                    hostL = config.hostL || 'localhost', portL = config.portL || 8082, // default 8082
                     urlG = "http://" + hostG + ":" + portG;
                     // instance properties 
                     this.client = client;
                     this.name = 'g';
                     this.genotype = socket_io_client_1.default.connect(urlG);
-                    this.log = new l_service_js_1.L(hostL, portL);
+                    this.log = new l_service_js_1.L(config);
                     // Rx: from Genotype service - name is string
                     var name_stream = rx_1.Rx.Observable.fromEvent(this.genotype, 'name')
                         .subscribe(function (name) {
@@ -69,7 +69,7 @@ System.register(['angular2/core', './l-service.js', 'rx', 'socket.io-client'], f
                 };
                 G = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [Object, Object, Object, Object, Object])
+                    __metadata('design:paramtypes', [Object, Object])
                 ], G);
                 return G;
             }());
