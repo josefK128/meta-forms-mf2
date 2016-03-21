@@ -1,31 +1,32 @@
-* __metaforms README-test__
-<br>Assumes cygwin bash console on windows.
+* __meta-forms-mf2 README-test__
 
 
 * [1] test/components/producer-component.e2e.spec is a set of 
 end-to-end tests exercising the actual running services backend 
 (genotype-service and phenotype-service)
 
-* to run start the services backend (with no associated producers)
-use argv[2] = 0 which causes no node producers to be created
-.i.e metaforms$> ```node index 0```
-(Otherwise argv[2] is the send period for two Node producers with default period=10000ms - see README)
-
-* Then run the e2e test
-metaforms$> ```bash test-e2e.sh```
-NOTE: the last test run generates a report in ```test/e2e/reports```
-<br>
+  * to run the e2e test:
+    * meta-forms-mf2$> ```bash test-e2e.sh```
+    * NOTE: the last test run generates a report in ```test/e2e/@reports```
 
 
 
-* [2] unit test for genotype using phenotype-service-mock
-NOTE: do NOT also run ```node index``` since it will cause port conflict!
-metaforms$> ```bash test-unit-genotype.sh```
-NOTE: the last test run generates a report in ```test/unit/genotype/reports```
-<br>
+
+* [2] unit tests for genotype and phenotype
+  * genotype unit test uses phenotype-service-mock
+  * phenotype unit test uses genotype-service-mock
+
+  * to run the unit tests:
+    * meta-forms-mf2$> ```bash test-unit-genotype.sh```
+    * NOTE: the last test run generates a report in ```test/unit/@reports```
 
 
-* [3] unit test for phenotype-service using genotype-service-mock
-NOTE: do NOT also run ```node index``` since it will cause port conflict!
-metaforms$> ```bash test-unit-phenotype.sh```
-NOTE: the last test run generates a report in ```test/unit/phenotype/reports```
+
+
+* [3] Each unit test can also be run separately 
+  * [a] unit test for genotype using phenotype-service-mock
+    * meta-forms-mf2$> ```bash test-unit-genotype.sh```
+    * NOTE: the last test run generates a report in ```test/unit/genotype/@reports```
+  * [b] unit test for phenotype-service using genotype-service-mock
+    * meta-forms-mf2$> ```bash test-unit-phenotype.sh```
+    * NOTE: the last test run generates a report in ```test/unit/phenotype/reports```

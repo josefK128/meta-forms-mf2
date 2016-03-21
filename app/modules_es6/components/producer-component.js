@@ -27,6 +27,7 @@ module.exports = class Producer {
     this.log = new L(hostL, portL);  // instance of l-proxy
     this.resultG = 'foo';  // for test
     this.resultP = 'foo';  // for test
+    console.log(`producer ctor complete this.g = ${this.g}`);
   }
 
 

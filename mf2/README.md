@@ -15,6 +15,6 @@ meta-forms$>```node index 0```
   * replace <base href= 'path to client-root'>
   * For example: suppose the repo is at $DOCUMENT_ROOT/k/meta-forms-mf2
   * then use:  <base href="/k/meta-forms-mf2/mf2/"> for the base href.
-  * request URL= "http://<domain>/k/meta-forms-mf2/mf2/app/index.html"
+  * Then URL= "http://(domain)/k/meta-forms-mf2/mf2/app/index.html"
 
-* [6] run in browser URL = http://<domain>/<pathToDist>/mf2/app/index.html
+* [6] run in browser URL = http://(domain)/(pathOfDist)/mf2/app/index.html

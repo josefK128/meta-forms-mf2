@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuites>
-<testsuite name="phenotype-service phenotype generation" errors="0" tests="2" failures="0" time="8.096" timestamp="2016-02-28T10:22:39">
+<testsuite name="phenotype-service phenotype generation" errors="0" tests="2" failures="0" time="8.096" timestamp="2016-03-21T09:17:26">
   <testcase classname="phenotype-service phenotype generation" name="Phenotype processes  genotype1 phenotype correctly" time="4.04"></testcase>
   <testcase classname="phenotype-service phenotype generation" name="Phenotype processes genotype2 phenotype correctly" time="4.056"></testcase>
 </testsuite>

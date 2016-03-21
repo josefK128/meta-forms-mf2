@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuites>
-<testsuite name="producer-component end-to-end" errors="0" tests="4" failures="0" time="16.208" timestamp="2016-02-28T10:04:43">
-  <testcase classname="producer-component end-to-end" name="Metaforms processes axiom1 genotype correctly" time="4.04"></testcase>
-  <testcase classname="producer-component end-to-end" name="Metaforms processes axiom1 phenotype correctly" time="4.056"></testcase>
-  <testcase classname="producer-component end-to-end" name="Metaforms processes axiom2 genotype correctly" time="4.056"></testcase>
-  <testcase classname="producer-component end-to-end" name="Metaforms processes axiom2 phenotype correctly" time="4.056"></testcase>
+<testsuite name="producer-component end-to-end" errors="0" tests="4" failures="0" time="16.137" timestamp="2016-03-21T10:15:08">
+  <testcase classname="producer-component end-to-end" name="Metaforms processes axiom1 genotype correctly" time="4.046"></testcase>
+  <testcase classname="producer-component end-to-end" name="Metaforms processes axiom1 phenotype correctly" time="4.03"></testcase>
+  <testcase classname="producer-component end-to-end" name="Metaforms processes axiom2 genotype correctly" time="4.03"></testcase>
+  <testcase classname="producer-component end-to-end" name="Metaforms processes axiom2 phenotype correctly" time="4.031"></testcase>
 </testsuite>
 </testsuites>

@@ -15,7 +15,8 @@ var Producer = require('../../../app/modules_es6/components/producer-component.j
     expect_genotype2 = 15,
     expect_phenotype2 = 30;
 
-    // initialize genotype-service phenotype-service
+    // initialize genotype-service phenotype-service log-service
+    // use default host='localhost' ports=8080,8081,8082 respectively
     genotype.initialize();
     phenotype.initialize();
 
