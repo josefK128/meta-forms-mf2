@@ -11,13 +11,16 @@
 # build node_modules locally from package.json by:
 # root> npm install --savedev
 node_modules
-jspm_packages
 mf2/node_modules
 mf2/jspm_packages
 
 # NOTE: ./app/build can be re-built by:
 # root> gulp build
 # root> gulp build-min
+
+# logs
+logs
+
 
 # NOTE: ./docs can be re-built in by
 # root> gulp docco

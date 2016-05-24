@@ -77,6 +77,9 @@ System.config({
       "timers": "github:jspm/nodelibs-timers@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
+    "github:jspm/nodelibs-os@0.1.0": {
+      "os-browserify": "npm:os-browserify@0.1.2"
+    },
     "github:jspm/nodelibs-path@0.1.0": {
       "path-browserify": "npm:path-browserify@0.0.0"
     },
@@ -339,6 +342,9 @@ System.config({
       "bn.js": "npm:bn.js@4.10.5",
       "brorand": "npm:brorand@1.0.5"
     },
+    "npm:os-browserify@0.1.2": {
+      "os": "github:jspm/nodelibs-os@0.1.0"
+    },
     "npm:parse-asn1@5.0.0": {
       "asn1.js": "npm:asn1.js@4.5.1",
       "browserify-aes": "npm:browserify-aes@1.0.6",
@@ -463,6 +469,9 @@ System.config({
     },
     "npm:timers-browserify@1.4.2": {
       "process": "npm:process@0.11.2"
+    },
+    "npm:typescript@1.8.2": {
+      "os": "github:jspm/nodelibs-os@0.1.0"
     },
     "npm:url@0.10.3": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
